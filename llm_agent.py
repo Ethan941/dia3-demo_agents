@@ -35,6 +35,16 @@ class ConversationAgent:
         )
 
 
+    def transcribe_audio(self, audio_file):
+        # Whisper (via Groq) transforme l'enregistrement vocal en texte
+        transcription = self.groq_client.audio.transcriptions.create(
+            file=("audio.wav", audio_file.getvalue()),
+            model="whisper-large-v3-turbo",
+            language="fr",
+        )
+        return transcription.text
+
+
     def ask_llm(self, text_interaction):
 
         self.update_conversation_history(role="user", content=text_interaction)
